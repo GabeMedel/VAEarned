@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Earned">
+<meta name="theme-color" content="#1B2A41">
+<title>Earned — You served. Use what you earned.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231B2A41'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23C9A356' font-family='Georgia' font-weight='bold'%3EE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2A41;
+    --navy-deep:#131F31;
+    --paper:#FAF7F0;
+    --card:#FFFFFF;
+    --ink:#22303F;
+    --ink-soft:#5C6773;
+    --brass:#B08D3E;
+    --brass-bright:#C9A356;
+    --olive:#5C6B4F;
+    --stamp-green:#3E6B4F;
+    --stamp-red:#A33B2E;
+    --line:#E3DDD0;
+    --radius:14px;
+    --font:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{font-size:17px}
+  body{
+    font-family:var(--font);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    min-height:100vh;
+    padding-bottom:90px;
+  }
+  button{font-family:var(--font);cursor:pointer;border:none;background:none;font-size:1rem}
+  a{color:var(--navy);font-weight:600}
+  :focus-visible{outline:3px solid var(--brass);outline-offset:2px;border-radius:4px}
+
+  /* ============ HEADER ============ */
+  header{
+    background:var(--navy);
+    color:var(--paper);
+    padding:calc(env(safe-area-inset-top, 0px) + 22px) 20px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;inset:auto 0 0 0;height:4px;
+    background:linear-gradient(90deg,var(--brass) 0%,var(--brass-bright) 50%,var(--brass) 100%);
+  }
+  .wordmark{
+    font-weight:900;
+    font-stretch:70%;
+    font-size:2.1rem;
+    letter-spacing:.06em;
+    line-height:1;
+    color:#fff;
+  }
+  .wordmark span{color:var(--brass-bright)}
+  .tagline{
+    margin-top:6px;
+    font-size:.85rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:#B9C4D4;
+    font-weight:600;
+    font-stretch:80%;
+  }
+  .gear{
+    position:absolute;top:calc(env(safe-area-inset-top, 0px) + 18px);right:14px;
+    width:44px;height:44px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:#B9C4D4;font-size:1.4rem;
+  }
+  .gear:active{background:rgba(255,255,255,.12)}
+
+  /* ============ TABS ============ */
+  nav{
+    position:fixed;bottom:0;left:0;right:0;z-index:40;
+    background:var(--navy-deep);
+    display:flex;
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+    box-shadow:0 -4px 18px rgba(19,31,49,.25);
+  }
+  nav button{
+    flex:1;
+    padding:13px 4px 11px;
+    color:#8A97A8;
+    font-weight:700;
+    font-size:.95rem;
+    letter-spacing:.03em;
+    display:flex;flex-direction:column;align-items:center;gap:3px;
+    border-top:3px solid transparent;
+  }
+  nav button .nicon{font-size:1.3rem;line-height:1}
+  nav button.active{color:var(--brass-bright);border-top-color:var(--brass-bright)}
+
+  main{max-width:640px;margin:0 auto;padding:20px 16px 30px}
+  .tabpane{display:none}
+  .tabpane.active{display:block;animation:rise .25s ease}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.tabpane.active{animation:none}}
+
+  .lead{font-size:1.02rem;color:var(--ink-soft);margin-bottom:18px}
+  .lead strong{color:var(--ink)}
+
+  /* ============ PROGRESS ============ */
+  .progress{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    margin-bottom:18px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .progress .big{
+    font-weight:900;font-stretch:75%;font-size:1.9rem;color:var(--navy);line-height:1;
+    min-width:74px;text-align:center;
+  }
+  .progress .big small{display:block;font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--ink-soft);margin-top:3px}
+  .progress p{font-size:.92rem;color:var(--ink-soft)}
+
+  /* ============ BENEFIT CARDS ============ */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px 16px 16px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .card.start-here{border:2px solid var(--brass);box-shadow:0 3px 14px rgba(176,141,62,.15)}
+  .eyebrow{
+    font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--olive);margin-bottom:5px;font-stretch:85%;
+  }
+  .start-here .eyebrow{color:var(--brass)}
+  .card h3{
+    font-weight:800;font-stretch:85%;font-size:1.28rem;line-height:1.25;color:var(--navy);
+    margin-bottom:8px;padding-right:8px;
+  }
+  .card .why{font-size:.98rem;margin-bottom:10px}
+  .card .worth{
+    display:inline-block;
+    background:#F2ECDD;border-radius:8px;
+    padding:4px 10px;font-size:.86rem;font-weight:700;color:#7A6329;
+    margin-bottom:12px;
+  }
+  .card .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .card .link{font-size:.92rem}
+
+  /* The status stamp — signature element */
+  .stamp{
+    border:2.5px solid var(--ink-soft);
+    color:var(--ink-soft);
+    border-radius:8px;
+    padding:9px 14px;
+    font-weight:900;
+    font-stretch:80%;
+    letter-spacing:.09em;
+    font-size:.86rem;
+    text-transform:uppercase;
+    transform:rotate(-1.5deg);
+    background:transparent;
+    transition:transform .12s ease;
+    min-height:44px;
+  }
+  .stamp:active{transform:rotate(-1.5deg) scale(.94)}
+  .stamp[data-s="1"]{border-color:var(--navy);color:var(--navy);background:rgba(27,42,65,.05)}
+  .stamp[data-s="2"]{border-color:var(--brass);color:#8A6E2F;background:rgba(176,141,62,.08)}
+  .stamp[data-s="3"]{border-color:var(--stamp-green);color:var(--stamp-green);background:rgba(62,107,79,.07)}
+  .stamp[data-s="4"]{border-color:var(--line);color:#A8A196;text-decoration:line-through;background:#FAF7F0}
+  .stamp-hint{font-size:.76rem;color:var(--ink-soft);margin-top:10px}
+
+  .notebtn{font-size:.85rem;color:var(--ink-soft);font-weight:600;padding:8px 0;text-decoration:underline;text-underline-offset:3px}
+  .note-area{width:100%;margin-top:8px;border:1px solid var(--line);border-radius:8px;padding:10px;font-family:var(--font);font-size:.95rem;min-height:64px;background:#FDFCF8}
+
+  /* ============ DECISIONS ============ */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 16px;margin-bottom:16px;
+  }
+  .panel h2{
+    font-weight:900;font-stretch:80%;font-size:1.35rem;color:var(--navy);margin-bottom:4px;
+  }
+  .panel .sub{font-size:.92rem;color:var(--ink-soft);margin-bottom:14px}
+
+  .q{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:13px 0;border-top:1px solid var(--line);
+  }
+  .q:first-of-type{border-top:none}
+  .q input[type=checkbox]{
+    width:26px;height:26px;flex:none;margin-top:2px;accent-color:var(--stamp-green);
+  }
+  .q label{font-size:1rem}
+  .q label b{display:block;font-weight:800;font-stretch:88%;color:var(--navy)}
+  .q label span{color:var(--ink-soft);font-size:.9rem}
+  .allclear{
+    display:none;margin-top:12px;padding:12px;border-radius:10px;
+    background:rgba(62,107,79,.1);color:var(--stamp-green);font-weight:700;font-size:.95rem;text-align:center;
+  }
+  .allclear.show{display:block}
+  .resetq{margin-top:10px;font-size:.85rem;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+
+  /* Time-math calculator */
+  .calc-row{display:flex;gap:10px;margin-bottom:12px}
+  .calc-row>div{flex:1}
+  .calc-row label{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:4px}
+  .calc-row input{
+    width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:1.15rem;font-weight:700;font-family:var(--font);background:#FDFCF8;color:var(--navy);
+  }
+  .calc-out{
+    text-align:center;padding:14px;border-radius:10px;background:var(--navy);color:var(--paper);
+  }
+  .calc-out .num{font-weight:900;font-stretch:75%;font-size:2rem;color:var(--brass-bright);line-height:1.1}
+  .calc-out .cap{font-size:.85rem;color:#B9C4D4;margin-top:4px}
+
+  /* ============ AI ADVISOR ============ */
+  .chatlog{
+    display:flex;flex-direction:column;gap:10px;margin-bottom:12px;
+    max-height:420px;overflow-y:auto;
+  }
+  .msg{padding:11px 14px;border-radius:14px;font-size:.98rem;max-width:88%;white-space:pre-wrap}
+  .msg.user{align-self:flex-end;background:var(--navy);color:var(--paper);border-bottom-right-radius:4px}
+  .msg.ai{align-self:flex-start;background:#F0EBDF;color:var(--ink);border-bottom-left-radius:4px}
+  .msg.ai.thinking{color:var(--ink-soft);font-style:italic}
+  .chatrow{display:flex;gap:8px}
+  .chatrow textarea{
+    flex:1;padding:12px;border:1.5px solid var(--line);border-radius:12px;
+    font-family:var(--font);font-size:1rem;resize:none;min-height:52px;background:#FDFCF8;
+  }
+  .send{
+    background:var(--brass);color:#fff;font-weight:800;border-radius:12px;
+    padding:0 20px;font-size:1rem;min-height:52px;flex:none;
+  }
+  .send:disabled{opacity:.45}
+  .ai-locked{
+    background:#F0EBDF;border-radius:10px;padding:14px;font-size:.92rem;color:var(--ink-soft);
+  }
+  .ai-locked b{color:var(--ink)}
+
+  /* ============ SETTINGS MODAL ============ */
+  .overlay{
+    display:none;position:fixed;inset:0;background:rgba(19,31,49,.55);z-index:60;
+    align-items:flex-end;justify-content:center;
+  }
+  .overlay.show{display:flex}
+  .sheet{
+    background:var(--paper);width:100%;max-width:640px;
+    border-radius:20px 20px 0 0;padding:22px 18px calc(env(safe-area-inset-bottom,0px) + 26px);
+    max-height:88vh;overflow-y:auto;
+  }
+  .sheet h2{font-weight:900;font-stretch:80%;color:var(--navy);font-size:1.4rem;margin-bottom:14px}
+  .sheet h3{font-weight:800;font-stretch:88%;font-size:1.02rem;margin:20px 0 6px;color:var(--navy)}
+  .sheet p{font-size:.9rem;color:var(--ink-soft);margin-bottom:8px}
+  .sheet input[type=password],.sheet input[type=text]{
+    width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;
+    font-size:.95rem;font-family:var(--font);background:#fff;
+  }
+  .btn{
+    display:inline-block;background:var(--navy);color:var(--paper);font-weight:800;
+    border-radius:10px;padding:12px 18px;font-size:.95rem;margin-top:10px;min-height:46px;
+  }
+  .btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+  .btn.danger{background:transparent;color:var(--stamp-red);border:1.5px solid var(--stamp-red)}
+  .closex{position:sticky;top:0;float:right;font-size:1.5rem;color:var(--ink-soft);padding:4px 10px}
+  .saved-flash{color:var(--stamp-green);font-weight:700;font-size:.9rem;display:none;margin-top:6px}
+  .saved-flash.show{display:block}
+
+  footer{
+    text-align:center;font-size:.78rem;color:#A8A196;padding:10px 20px 20px;max-width:640px;margin:0 auto;
+  }
+
+  /* ============ MONEY TAB ============ */
+  .dash{
+    background:var(--navy);color:var(--paper);border-radius:var(--radius);
+    padding:20px 16px;margin-bottom:16px;text-align:center;
+  }
+  .dash .hero-num{font-weight:900;font-stretch:75%;font-size:2.6rem;line-height:1.05;color:var(--brass-bright)}
+  .dash .hero-num.neg{color:#E08A7A}
+  .dash .hero-cap{font-size:.85rem;color:#B9C4D4;margin-top:4px}
+  .dash-grid{display:flex;gap:10px;margin-top:16px}
+  .dash-grid>div{flex:1;background:rgba(255,255,255,.07);border-radius:10px;padding:10px 6px}
+  .dash-grid .n{font-weight:900;font-stretch:80%;font-size:1.15rem;color:#fff}
+  .dash-grid .c{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#8A97A8;font-weight:700;margin-top:2px}
+  .ratio-pill{
+    display:inline-block;margin-top:14px;padding:7px 14px;border-radius:999px;
+    font-weight:800;font-size:.88rem;letter-spacing:.02em;
+  }
+  .ratio-pill.ok{background:rgba(62,107,79,.35);color:#9FD3B0}
+  .ratio-pill.tight{background:rgba(176,141,62,.3);color:#E5C97F}
+  .ratio-pill.hot{background:rgba(163,59,46,.35);color:#F0A79A}
+
+  .mrow{display:flex;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+  .mrow:first-of-type{border-top:none}
+  .mrow input{
+    padding:11px 10px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:var(--font);font-size:1rem;background:#FDFCF8;min-width:0;
+  }
+  .mrow .mname{flex:1.6}
+  .mrow .mamt{flex:1;font-weight:700;text-align:right;color:var(--navy)}
+  .mrow select{
+    flex:1.2;padding:11px 6px;border:1.5px solid var(--line);border-radius:9px;
+    font-family:var(--font);font-size:.92rem;background:#FDFCF8;min-width:0;
+  }
+  .mdel{flex:none;min-width:38px;height:38px;border-radius:9px;color:var(--stamp-red);font-size:1.2rem;font-weight:700;padding:0 6px}
+  .mdel:active{background:rgba(163,59,46,.1)}
+  .mdel.armed{background:var(--stamp-red);color:#fff;font-size:.82rem;letter-spacing:.02em}
+  .btn.danger.armed{background:var(--stamp-red);color:#fff}
+  .maddbtn{
+    width:100%;margin-top:10px;padding:12px;border:2px dashed var(--line);border-radius:10px;
+    color:var(--ink-soft);font-weight:700;font-size:.95rem;
+  }
+  .maddbtn:active{background:#F2EEE4}
+  .mtotal{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-top:12px;padding-top:12px;border-top:2px solid var(--navy);
+  }
+  .mtotal span{font-size:.85rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .mtotal b{font-weight:900;font-stretch:78%;font-size:1.5rem;color:var(--navy)}
+  .liq-note{font-size:.85rem;color:var(--ink-soft);margin-top:8px;line-height:1.45}
+
+  .goal{border-top:1px solid var(--line);padding:14px 0}
+  .goal:first-of-type{border-top:none;padding-top:4px}
+  .goal-top{display:flex;gap:8px;margin-bottom:8px}
+  .gbar{height:14px;border-radius:999px;background:#EDE7D9;overflow:hidden;margin:8px 0 6px}
+  .gbar>div{height:100%;background:linear-gradient(90deg,var(--olive),var(--stamp-green));border-radius:999px;transition:width .3s ease;min-width:0}
+  .gmeta{display:flex;justify-content:space-between;font-size:.85rem;color:var(--ink-soft)}
+  .gmeta b{color:var(--stamp-green)}
+  .gdone{color:var(--stamp-green);font-weight:800;font-size:.92rem;margin-top:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">EARN<span>ED</span></div>
+  <div class="tagline">You served. Use what you earned.</div>
+  <button class="gear" id="gearBtn" aria-label="Settings">&#9881;</button>
+</header>
+
+<main>
+  <!-- ================= BENEFITS TAB ================= -->
+  <section class="tabpane active" id="tab-benefits">
+    <p class="lead">These are benefits you <strong>already earned</strong> by serving. Most aren't automatic — you have to raise your hand. Tap the stamp on each one to track where you are with it.</p>
+
+    <div class="progress">
+      <div class="big"><span id="progCount">0</span><small>OF <span id="progTotal">0</span></small></div>
+      <p id="progText">benefits looked into. Every one of these is either money back in your pocket or a safety net you paid for with your service.</p>
+    </div>
+
+    <div id="benefitList"></div>
+  </section>
+
+  <!-- ================= MONEY TAB ================= -->
+  <section class="tabpane" id="tab-money">
+    <p class="lead">The whole picture in one place. Fill in what comes in, what goes out, and what you've got — the numbers up top do the rest, automatically.</p>
+
+    <div class="dash">
+      <div class="hero-num" id="dashLeft">$0</div>
+      <div class="hero-cap">left over each month — if nothing gets spent outside the bills below</div>
+      <div class="dash-grid">
+        <div><div class="n" id="dashIncome">$0</div><div class="c">In / month</div></div>
+        <div><div class="n" id="dashBills">$0</div><div class="c">Bills / month</div></div>
+        <div><div class="n" id="dashLiquid">$0</div><div class="c">Cash on hand</div></div>
+      </div>
+      <span class="ratio-pill ok" id="ratioPill">Add income &amp; bills below</span>
+    </div>
+
+    <div class="panel">
+      <h2>Money coming in</h2>
+      <p class="sub">Monthly amounts. Retirement pay, VA payments, wages, rent collected — everything regular.</p>
+      <div id="incomeList"></div>
+      <button class="maddbtn" data-add="income">+ Add income</button>
+      <div class="mtotal"><span>Total in / month</span><b id="incomeTotal">$0</b></div>
+    </div>
+
+    <div class="panel">
+      <h2>Bills going out</h2>
+      <p class="sub">Every regular monthly payment: mortgage or rent, utilities, insurance, phone, subscriptions, minimum card payments, loan payments.</p>
+      <div id="billList"></div>
+      <button class="maddbtn" data-add="bills">+ Add a bill</button>
+      <div class="mtotal"><span>Total bills / month</span><b id="billTotal">$0</b></div>
+    </div>
+
+    <div class="panel">
+      <h2>What you can put your hands on</h2>
+      <p class="sub">Checking, savings, and cash are money you own. For credit cards, enter the <b>available credit</b> (limit minus what's owed).</p>
+      <div id="acctList"></div>
+      <button class="maddbtn" data-add="accounts">+ Add an account or card</button>
+      <div class="mtotal"><span>Yours (cash)</span><b id="cashTotal">$0</b></div>
+      <div class="mtotal" style="border-top:1px solid var(--line)"><span>+ Available credit</span><b id="creditTotal" style="color:var(--ink-soft)">$0</b></div>
+      <div class="mtotal" style="border-top:1px solid var(--line)"><span>Total reachable</span><b id="reachTotal">$0</b></div>
+      <p class="liq-note">Straight talk: the credit part is reachable, but every dollar of it becomes a debt with interest the day it's used. The top number is the one that's really yours.</p>
+    </div>
+
+    <div class="panel">
+      <h2>Savings goals</h2>
+      <p class="sub">Point a goal at one of your savings accounts and the progress bar fills itself from that account's balance. Add a monthly amount to see how far off it is.</p>
+      <div id="goalList"></div>
+      <button class="maddbtn" data-add="goals">+ Add a goal</button>
+    </div>
+  </section>
+
+  <!-- ================= DECISIONS TAB ================= -->
+  <section class="tabpane" id="tab-decisions">
+    <p class="lead">For the <strong>big</strong> money moves — selling something, buying something major, taking on a payment. Not for groceries. The goal is one thing: <strong>slow down and see the full picture before deciding.</strong></p>
+
+    <div class="panel">
+      <h2>Before you decide: 5 questions</h2>
+      <p class="sub">Check each one off honestly. If you can't check a box yet, that's the box telling you you're not ready to decide.</p>
+
+      <div class="q">
+        <input type="checkbox" id="q1" class="qbox">
+        <label for="q1"><b>1. What does this look like in 5 years?</b>
+        <span>Not just today. If it brings money in or costs money monthly, multiply it out. (Calculator below.)</span></label>
+      </div>
+      <div class="q">
+        <input type="checkbox" id="q2" class="qbox">
+        <label for="q2"><b>2. What are we giving up?</b>
+        <span>Every yes to one thing is a no to something else. What would this money — or this thing we're selling — do for us if we kept it?</span></label>
+      </div>
+      <div class="q">
+        <input type="checkbox" id="q3" class="qbox">
+        <label for="q3"><b>3. What's the rush?</b>
+        <span>If waiting 30 days would kill the deal, that's usually a sign it's a deal for <em>them</em>, not for you. Big decisions can almost always wait a month.</span></label>
+      </div>
+      <div class="q">
+        <input type="checkbox" id="q4" class="qbox">
+        <label for="q4"><b>4. Who did we ask?</b>
+        <span>At least one person who gains nothing from your decision. Not the salesperson. Not the buyer's agent.</span></label>
+      </div>
+      <div class="q">
+        <input type="checkbox" id="q5" class="qbox">
+        <label for="q5"><b>5. What would we tell a friend?</b>
+        <span>If a buddy described this exact decision to you, what would you honestly say to them? Say that to yourselves.</span></label>
+      </div>
+
+      <div class="allclear" id="allClear">All five answered. Now you're deciding with your eyes open. &#10004;</div>
+      <button class="resetq" id="resetQs">Reset for a new decision</button>
+    </div>
+
+    <div class="panel">
+      <h2>The 5-year math</h2>
+      <p class="sub">Monthly amounts hide their real size. This shows what a monthly number actually adds up to.</p>
+      <div class="calc-row">
+        <div>
+          <label for="calcMonthly">$ per month</label>
+          <input type="number" id="calcMonthly" inputmode="decimal" placeholder="2000">
+        </div>
+        <div>
+          <label for="calcYears">Years</label>
+          <input type="number" id="calcYears" inputmode="numeric" value="5">
+        </div>
+      </div>
+      <div class="calc-out">
+        <div class="num" id="calcTotal">$0</div>
+        <div class="cap" id="calcCaption">total over 5 years</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Talk it through</h2>
+      <p class="sub">Describe the decision in plain words. You'll get the questions worth asking and the angles that are easy to miss — not orders, just a clearer view.</p>
+      <div id="aiArea"></div>
+    </div>
+  </section>
+</main>
+
+<nav>
+  <button class="active" data-tab="benefits"><span class="nicon">&#9733;</span>Benefits</button>
+  <button data-tab="money"><span class="nicon">&#36;</span>Money</button>
+  <button data-tab="decisions"><span class="nicon">&#9878;</span>Decisions</button>
+</nav>
+
+<!-- ================= SETTINGS ================= -->
+<div class="overlay" id="settingsOverlay">
+  <div class="sheet">
+    <button class="closex" id="closeSettings" aria-label="Close">&#10005;</button>
+    <h2>Settings &amp; backup</h2>
+
+    <h3>Advisor key</h3>
+    <p>The "Talk it through" advisor runs on Anthropic's Claude and needs an API key to work. Whoever set this app up for you can add it here — it's saved only on this phone.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off">
+    <button class="btn" id="saveKey">Save key</button>
+    <span class="saved-flash" id="keySaved">Saved. The advisor is ready.</span>
+
+    <h3>Back up your progress</h3>
+    <p>Your stamps and notes live on this phone only. Once in a while, save a backup file — especially before getting a new phone.</p>
+    <button class="btn ghost" id="exportBtn">Download backup file</button>
+    <button class="btn ghost" id="importBtn">Restore from backup</button>
+    <input type="file" id="importFile" accept=".json" style="display:none">
+    <span class="saved-flash" id="importSaved">Restored.</span>
+
+    <h3>Start over</h3>
+    <button class="btn danger" id="resetAll">Erase everything on this phone</button>
+  </div>
+</div>
+
+<footer>Earned is a family tool, not the VA. Benefit details change — the official links are always the final word. Nothing here is financial, legal, or investment advice.</footer>
+
+<script>
+"use strict";
+
+/* ============================================================
+   DATA
+============================================================ */
+const BENEFITS = [
+  {
+    id:"vso", startHere:true, cat:"Start here",
+    title:"Sit down with a Veterans Service Officer (free)",
+    why:"Every county has a Veterans Service Officer whose entire job is finding benefits you're owed and filling out the paperwork with you. It costs nothing, ever. One appointment here can unlock half this list. If you do only one thing on this page, do this one.",
+    worth:"One visit can surface thousands/yr",
+    link:"https://www.va.gov/get-help-from-accredited-representative/",
+    linkText:"Find an accredited VSO (va.gov)"
+  },
+  {
+    id:"health", cat:"Health",
+    title:"VA Health Care",
+    why:"Not automatic — you have to enroll, even decades after service. Depending on your priority group, care and prescriptions can cost far less than private insurance premiums. Even as a backup to existing coverage, it's worth having.",
+    worth:"Often $1,000s/yr vs. premiums",
+    link:"https://www.va.gov/health-care/how-to-apply/",
+    linkText:"How to enroll (va.gov)"
+  },
+  {
+    id:"fincoach", cat:"Money help",
+    title:"Free financial & credit counseling for veterans",
+    why:"Through the Veterans Benefits Banking Program, veterans get free one-on-one sessions with certified financial counselors — budgeting, credit cards, debt payoff plans. Free means free: no products sold, no strings. A pro in your corner for the exact stuff that feels tight right now.",
+    worth:"Normally $100–200/session — free",
+    link:"https://veteransbenefitsbanking.org/",
+    linkText:"Veterans Benefits Banking Program"
+  },
+  {
+    id:"homeloan", cat:"Housing",
+    title:"VA Home Loan — including refinancing",
+    why:"You can use the VA loan benefit more than once, not just the first time. If you have a mortgage now, a VA streamline refinance (IRRRL) may lower the rate with minimal paperwork, and VA loans never charge private mortgage insurance.",
+    worth:"PMI alone is often $100–300/mo",
+    link:"https://www.va.gov/housing-assistance/home-loans/",
+    linkText:"VA home loans (va.gov)"
+  },
+  {
+    id:"colorado", cat:"Colorado",
+    title:"Colorado state veteran benefits",
+    why:"Colorado has its own stack: a property tax exemption for qualifying veterans, free state park access at certain times, veteran license plates, and county programs. State benefits are separate from federal ones — having one doesn't use up the other.",
+    worth:"Property tax exemption can be $500+/yr",
+    link:"https://vets.colorado.gov/",
+    linkText:"Colorado Dept. of Veterans Affairs"
+  },
+  {
+    id:"gibill", cat:"Education",
+    title:"GI Bill & education benefits",
+    why:"Depending on when you served, education benefits may still be available — for college, but also for certifications, licensing exams, and trade programs. Worth a 10-minute eligibility check even if school feels like ancient history.",
+    worth:"Up to full tuition + housing stipend",
+    link:"https://www.va.gov/education/",
+    linkText:"Check education benefits (va.gov)"
+  },
+  {
+    id:"pension", cat:"Safety net",
+    title:"Veterans Pension & Aid and Attendance",
+    why:"A needs-based monthly payment for wartime veterans with limited income — and Aid and Attendance adds more if daily help or care is ever needed. Maybe not for today, but knowing it exists changes how scary the future looks. File it under 'good to know.'",
+    worth:"Can be $1,000+/mo if eligible",
+    link:"https://www.va.gov/pension/",
+    linkText:"Pension programs (va.gov)"
+  },
+  {
+    id:"exchange", cat:"Everyday savings",
+    title:"Military exchange online shopping",
+    why:"Honorably discharged veterans can shop the online military exchanges — tax-free, with member pricing. Small on any one purchase, real money over a year of regular buying.",
+    worth:"Sales-tax-free + member pricing",
+    link:"https://www.shopmyexchange.com/veterans",
+    linkText:"Verify & shop (shopmyexchange.com)"
+  },
+  {
+    id:"parks", cat:"Quality of life",
+    title:"Free lifetime National Parks pass",
+    why:"Veterans get the America the Beautiful pass — normally $80 a year — free, for life. Covers entry to national parks and federal recreation lands for everyone in the vehicle. You live in Colorado; this one's practically a birthright.",
+    worth:"$80/yr, free for life",
+    link:"https://www.nps.gov/planyourvisit/veterans-and-gold-star-families-free-access.htm",
+    linkText:"How to get the pass (nps.gov)"
+  },
+  {
+    id:"burial", cat:"Planning ahead",
+    title:"Burial & memorial benefits",
+    why:"Nobody loves this topic, but here's the practical side: national cemetery burial, headstone, and honors are provided at no cost to eligible veterans, and pre-need eligibility can be confirmed now so family never has to figure it out under pressure. Doing this early is a gift to your kids.",
+    worth:"Saves families $1,000s later",
+    link:"https://www.va.gov/burials-memorials/",
+    linkText:"Burial benefits (va.gov)"
+  }
+];
+
+const STATUS = ["Not started","Looking into it","Applied","Using it","Not for us"];
+
+/* ============================================================
+   STATE (localStorage)
+============================================================ */
+const store = {
+  load(){
+    try{ return JSON.parse(localStorage.getItem("earned-data")) || {} }
+    catch(e){ return {} }
+  },
+  save(d){ localStorage.setItem("earned-data", JSON.stringify(d)) }
+};
+let state = Object.assign({ statuses:{}, notes:{}, apiKey:"", money:null }, store.load());
+if(!state.money) state.money = { income:[], bills:[], accounts:[], goals:[] };
+["income","bills","accounts","goals"].forEach(k=>{ if(!Array.isArray(state.money[k])) state.money[k]=[] });
+function persist(){ store.save(state) }
+function uid(){ return "m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6) }
+function money$(n){ return "$"+(Math.round(n)).toLocaleString() }
+
+/* Two-tap confirm: first tap arms the button ("Sure?"), second tap within 3s
+   runs the action. Replaces window.confirm(), which sandboxed previews and
+   some in-app browsers silently block. */
+function armDelete(btn, onConfirm, armedText){
+  btn.addEventListener("click", ()=>{
+    if(btn.classList.contains("armed")){
+      clearTimeout(btn._disarm);
+      onConfirm();
+      return;
+    }
+    btn.classList.add("armed");
+    btn._orig = btn.innerHTML;
+    btn.innerHTML = armedText || "Sure?";
+    btn._disarm = setTimeout(()=>{
+      btn.classList.remove("armed");
+      btn.innerHTML = btn._orig;
+    }, 3000);
+  });
+}
+
+/* ============================================================
+   BENEFITS RENDERING
+============================================================ */
+const listEl = document.getElementById("benefitList");
+
+function renderBenefits(){
+  listEl.innerHTML = "";
+  BENEFITS.forEach(b=>{
+    const s = state.statuses[b.id] || 0;
+    const card = document.createElement("div");
+    card.className = "card" + (b.startHere ? " start-here" : "");
+    card.innerHTML = `
+      <div class="eyebrow">${b.cat}</div>
+      <h3>${b.title}</h3>
+      <p class="why">${b.why}</p>
+      <span class="worth">${b.worth}</span>
+      <div class="row">
+        <button class="stamp" data-id="${b.id}" data-s="${s}" aria-label="Status: ${STATUS[s]}. Tap to change.">${STATUS[s]}</button>
+        <a class="link" href="${b.link}" target="_blank" rel="noopener">${b.linkText} &rarr;</a>
+      </div>
+      <button class="notebtn" data-note="${b.id}">${state.notes[b.id] ? "Edit note" : "+ Add a note"}</button>
+      <div class="note-holder" id="noteh-${b.id}">${
+        state.notes[b.id] ? `<div style="font-size:.92rem;color:var(--ink-soft);margin-top:6px;white-space:pre-wrap">${escapeHtml(state.notes[b.id])}</div>` : ""
+      }</div>
+    `;
+    listEl.appendChild(card);
+  });
+  updateProgress();
+}
+
+function updateProgress(){
+  const total = BENEFITS.length;
+  const touched = BENEFITS.filter(b => (state.statuses[b.id]||0) > 0).length;
+  document.getElementById("progCount").textContent = touched;
+  document.getElementById("progTotal").textContent = total;
+  const p = document.getElementById("progText");
+  if(touched === 0) p.textContent = "benefits looked into so far. Start with the gold one at the top — it makes all the others easier.";
+  else if(touched < total) p.textContent = "benefits looked into. Every stamp is money back in your pocket or a safety net you already paid for.";
+  else p.textContent = "— you've looked at every single one. That puts you ahead of most veterans in the country. Seriously.";
+}
+
+listEl.addEventListener("click", e=>{
+  const stamp = e.target.closest(".stamp");
+  if(stamp){
+    const id = stamp.dataset.id;
+    const next = ((state.statuses[id]||0) + 1) % STATUS.length;
+    state.statuses[id] = next;
+    persist();
+    stamp.dataset.s = next;
+    stamp.textContent = STATUS[next];
+    stamp.setAttribute("aria-label", `Status: ${STATUS[next]}. Tap to change.`);
+    updateProgress();
+    return;
+  }
+  const noteBtn = e.target.closest(".notebtn");
+  if(noteBtn){
+    const id = noteBtn.dataset.note;
+    const holder = document.getElementById("noteh-"+id);
+    if(holder.querySelector("textarea")) return;
+    holder.innerHTML = `<textarea class="note-area" placeholder="e.g. Called Tuesday, waiting to hear back...">${escapeHtml(state.notes[id]||"")}</textarea>`;
+    const ta = holder.querySelector("textarea");
+    ta.focus();
+    ta.addEventListener("blur", ()=>{
+      state.notes[id] = ta.value.trim();
+      persist();
+      renderBenefits();
+    });
+  }
+});
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+/* ============================================================
+   TABS
+============================================================ */
+document.querySelectorAll("nav button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tabpane").forEach(t=>t.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tab-"+btn.dataset.tab).classList.add("active");
+    window.scrollTo({top:0});
+  });
+});
+
+/* ============================================================
+   5 QUESTIONS
+============================================================ */
+const qboxes = document.querySelectorAll(".qbox");
+qboxes.forEach(q=>q.addEventListener("change", ()=>{
+  const all = [...qboxes].every(b=>b.checked);
+  document.getElementById("allClear").classList.toggle("show", all);
+}));
+document.getElementById("resetQs").addEventListener("click", ()=>{
+  qboxes.forEach(b=>b.checked=false);
+  document.getElementById("allClear").classList.remove("show");
+});
+
+/* ============================================================
+   5-YEAR CALCULATOR
+============================================================ */
+const cm = document.getElementById("calcMonthly");
+const cy = document.getElementById("calcYears");
+function runCalc(){
+  const m = parseFloat(cm.value)||0;
+  const y = parseFloat(cy.value)||0;
+  const total = m*12*y;
+  document.getElementById("calcTotal").textContent = "$"+total.toLocaleString(undefined,{maximumFractionDigits:0});
+  document.getElementById("calcCaption").textContent = `total over ${y||0} year${y===1?"":"s"} — that's the real number to weigh`;
+}
+cm.addEventListener("input", runCalc);
+cy.addEventListener("input", runCalc);
+
+/* ============================================================
+   MONEY TAB
+============================================================ */
+const ACCT_TYPES = [
+  {v:"checking", label:"Checking"},
+  {v:"savings",  label:"Savings"},
+  {v:"cash",     label:"Cash"},
+  {v:"credit",   label:"Credit card (available)"}
+];
+
+function moneyRow(item, kind){
+  const row = document.createElement("div");
+  row.className = "mrow";
+  const namePH = kind==="income" ? "e.g. Retirement pay"
+               : kind==="bills"  ? "e.g. Mortgage"
+               : "e.g. USAA Savings";
+  let typeSel = "";
+  if(kind==="accounts"){
+    typeSel = `<select data-f="type" aria-label="Account type">${
+      ACCT_TYPES.map(t=>`<option value="${t.v}"${item.type===t.v?" selected":""}>${t.label}</option>`).join("")
+    }</select>`;
+  }
+  row.innerHTML = `
+    <input class="mname" data-f="name" placeholder="${namePH}" value="${escapeHtml(item.name||"")}" aria-label="Name">
+    ${typeSel}
+    <input class="mamt" data-f="amt" type="number" inputmode="decimal" placeholder="$" value="${item.amt ?? ""}" aria-label="Amount">
+    <button class="mdel" aria-label="Remove">&#10005;</button>
+  `;
+  row.querySelectorAll("[data-f]").forEach(inp=>{
+    inp.addEventListener("input", ()=>{
+      if(inp.dataset.f==="amt") item.amt = parseFloat(inp.value)||0;
+      else item[inp.dataset.f] = inp.value;
+      persist();
+      updateMoneyMath();
+      if(kind==="accounts") renderGoals(); // account names/types feed goal dropdowns
+    });
+  });
+  armDelete(row.querySelector(".mdel"), ()=>{
+    state.money[kind] = state.money[kind].filter(x=>x.id!==item.id);
+    persist();
+    renderMoney();
+  });
+  return row;
+}
+
+function renderMoney(){
+  const incEl = document.getElementById("incomeList");
+  const billEl = document.getElementById("billList");
+  const acctEl = document.getElementById("acctList");
+  incEl.innerHTML = ""; billEl.innerHTML = ""; acctEl.innerHTML = "";
+  state.money.income.forEach(i=>incEl.appendChild(moneyRow(i,"income")));
+  state.money.bills.forEach(i=>billEl.appendChild(moneyRow(i,"bills")));
+  state.money.accounts.forEach(i=>acctEl.appendChild(moneyRow(i,"accounts")));
+  renderGoals();
+  updateMoneyMath();
+}
+
+document.querySelectorAll(".maddbtn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const kind = btn.dataset.add;
+    const item = { id:uid(), name:"", amt:0 };
+    if(kind==="accounts") item.type = "checking";
+    if(kind==="goals"){ item.target = 0; item.accountId = "__allsavings"; item.monthly = 0; }
+    state.money[kind].push(item);
+    persist();
+    if(kind==="goals") renderGoals(); else renderMoney();
+    // focus the new row's first input
+    setTimeout(()=>{
+      const lists = {income:"incomeList",bills:"billList",accounts:"acctList",goals:"goalList"};
+      const el = document.getElementById(lists[kind]);
+      const inp = el && el.querySelector(".mrow:last-of-type input, .goal:last-of-type input");
+      if(inp) inp.focus();
+    },0);
+  });
+});
+
+function updateMoneyMath(){
+  const sum = arr => arr.reduce((t,x)=>t+(parseFloat(x.amt)||0),0);
+  const inc = sum(state.money.income);
+  const bills = sum(state.money.bills);
+  const left = inc - bills;
+  const cash = sum(state.money.accounts.filter(a=>a.type!=="credit"));
+  const credit = sum(state.money.accounts.filter(a=>a.type==="credit"));
+
+  document.getElementById("incomeTotal").textContent = money$(inc);
+  document.getElementById("billTotal").textContent = money$(bills);
+  document.getElementById("cashTotal").textContent = money$(cash);
+  document.getElementById("creditTotal").textContent = "+ "+money$(credit);
+  document.getElementById("reachTotal").textContent = money$(cash+credit);
+
+  const heroEl = document.getElementById("dashLeft");
+  heroEl.textContent = (left<0?"-":"")+money$(Math.abs(left));
+  heroEl.classList.toggle("neg", left<0);
+  document.getElementById("dashIncome").textContent = money$(inc);
+  document.getElementById("dashBills").textContent = money$(bills);
+  document.getElementById("dashLiquid").textContent = money$(cash);
+
+  const pill = document.getElementById("ratioPill");
+  if(inc<=0){
+    pill.className = "ratio-pill ok";
+    pill.textContent = "Add income & bills below";
+  }else{
+    const pct = Math.round(bills/inc*100);
+    if(pct<60){ pill.className="ratio-pill ok"; pill.textContent = pct+"% of income goes to bills — breathing room"; }
+    else if(pct<=85){ pill.className="ratio-pill tight"; pill.textContent = pct+"% of income goes to bills — tight"; }
+    else{ pill.className="ratio-pill hot"; pill.textContent = pct+"% of income goes to bills — very tight"; }
+  }
+  refreshGoalBars();
+}
+
+/* ---- Goals ---- */
+function goalAccountOptions(selected){
+  const savers = state.money.accounts.filter(a=>a.type==="savings"||a.type==="checking"||a.type==="cash");
+  let opts = `<option value="__allsavings"${selected==="__allsavings"?" selected":""}>All savings accounts</option>`;
+  opts += savers.map(a=>`<option value="${a.id}"${selected===a.id?" selected":""}>${escapeHtml(a.name||"(unnamed account)")}</option>`).join("");
+  return opts;
+}
+
+function goalBalance(g){
+  if(g.accountId==="__allsavings")
+    return state.money.accounts.filter(a=>a.type==="savings").reduce((t,a)=>t+(parseFloat(a.amt)||0),0);
+  const a = state.money.accounts.find(x=>x.id===g.accountId);
+  return a ? (parseFloat(a.amt)||0) : 0;
+}
+
+function renderGoals(){
+  const el = document.getElementById("goalList");
+  el.innerHTML = "";
+  if(state.money.goals.length===0){
+    el.innerHTML = `<p style="font-size:.92rem;color:var(--ink-soft)">No goals yet. Even one — "$1,000 cushion" — changes how the leftover money gets treated.</p>`;
+    return;
+  }
+  state.money.goals.forEach(g=>{
+    const wrap = document.createElement("div");
+    wrap.className = "goal";
+    wrap.innerHTML = `
+      <div class="goal-top">
+        <input class="mname" data-f="name" placeholder="e.g. Emergency fund" value="${escapeHtml(g.name||"")}" aria-label="Goal name" style="flex:1.6;padding:11px 10px;border:1.5px solid var(--line);border-radius:9px;font-family:var(--font);font-size:1rem;background:#FDFCF8;min-width:0">
+        <input class="mamt" data-f="target" type="number" inputmode="decimal" placeholder="Target $" value="${g.target||""}" aria-label="Target amount" style="flex:1;padding:11px 10px;border:1.5px solid var(--line);border-radius:9px;font-family:var(--font);font-size:1rem;font-weight:700;text-align:right;color:var(--navy);background:#FDFCF8;min-width:0">
+        <button class="mdel" aria-label="Remove goal">&#10005;</button>
+      </div>
+      <div class="goal-top">
+        <select data-f="accountId" aria-label="Funded from" style="flex:1.6;padding:11px 6px;border:1.5px solid var(--line);border-radius:9px;font-family:var(--font);font-size:.92rem;background:#FDFCF8;min-width:0">${goalAccountOptions(g.accountId)}</select>
+        <input class="mamt" data-f="monthly" type="number" inputmode="decimal" placeholder="$/mo (optional)" value="${g.monthly||""}" aria-label="Monthly contribution" style="flex:1;padding:11px 10px;border:1.5px solid var(--line);border-radius:9px;font-family:var(--font);font-size:.95rem;text-align:right;background:#FDFCF8;min-width:0">
+      </div>
+      <div class="gbar"><div data-bar style="width:0%"></div></div>
+      <div class="gmeta"><span data-meta-left></span><b data-meta-right></b></div>
+    `;
+    wrap.querySelectorAll("[data-f]").forEach(inp=>{
+      inp.addEventListener("input", ()=>{
+        const f = inp.dataset.f;
+        g[f] = (f==="target"||f==="monthly") ? (parseFloat(inp.value)||0) : inp.value;
+        persist();
+        refreshGoalBars();
+      });
+    });
+    armDelete(wrap.querySelector(".mdel"), ()=>{
+      state.money.goals = state.money.goals.filter(x=>x.id!==g.id);
+      persist();
+      renderGoals();
+    });
+    wrap._goal = g;
+    el.appendChild(wrap);
+  });
+  refreshGoalBars();
+}
+
+function refreshGoalBars(){
+  document.querySelectorAll("#goalList .goal").forEach(wrap=>{
+    const g = wrap._goal;
+    if(!g) return;
+    const bal = goalBalance(g);
+    const target = parseFloat(g.target)||0;
+    const pct = target>0 ? Math.min(100, bal/target*100) : 0;
+    wrap.querySelector("[data-bar]").style.width = pct+"%";
+    const left = Math.max(0, target-bal);
+    const l = wrap.querySelector("[data-meta-left]");
+    const r = wrap.querySelector("[data-meta-right]");
+    if(target<=0){ l.textContent = "Set a target amount"; r.textContent = ""; return; }
+    l.textContent = money$(bal)+" of "+money$(target);
+    if(bal>=target){ r.textContent = "Done. Well earned."; }
+    else if(g.monthly>0){
+      const months = Math.ceil(left/g.monthly);
+      r.textContent = "~"+months+" month"+(months===1?"":"s")+" to go at "+money$(g.monthly)+"/mo";
+    }else{
+      r.textContent = money$(left)+" to go";
+    }
+  });
+}
+
+/* ============================================================
+   AI ADVISOR
+============================================================ */
+const aiArea = document.getElementById("aiArea");
+let chat = []; // {role, content}
+
+const SYSTEM_PROMPT = `You are a calm, plain-spoken thinking partner helping a retired married couple (both military veterans, living in Colorado) think through a big financial decision. They are smart, practical people who sometimes decide too fast and miss the long-term picture.
+
+Your job:
+- Ask the questions a wise friend would ask. Especially: what does this look like over 5+ years, what are they giving up, is there sales pressure, and who benefits from them saying yes.
+- Point out angles they may not have considered, including whether any VA or veteran benefit is relevant.
+- Do the simple math out loud when monthly amounts are involved (monthly x 12 x years).
+- Keep answers SHORT: a few sentences or a short list. No lectures. Warm, direct, respectful — like a trusted family friend, not a professor.
+- Never tell them what to decide. Help them see clearly, then trust them.
+- You are not a financial advisor, lawyer, or the VA. If something needs a professional (taxes, legal, investments), say so plainly and suggest their free county Veterans Service Officer or the free veteran financial counseling program when relevant.
+- Never recommend specific investments, stocks, or financial products.`;
+
+function moneyContext(){
+  const sum = arr => arr.reduce((t,x)=>t+(parseFloat(x.amt)||0),0);
+  const inc = sum(state.money.income);
+  const bills = sum(state.money.bills);
+  if(inc===0 && bills===0) return "";
+  const cash = sum(state.money.accounts.filter(a=>a.type!=="credit"));
+  const credit = sum(state.money.accounts.filter(a=>a.type==="credit"));
+  const goals = state.money.goals.filter(g=>g.name&&g.target>0)
+    .map(g=>`${g.name}: ${money$(goalBalance(g))} saved of ${money$(g.target)}`).join("; ");
+  return `\n\nTheir current household numbers (from the app's Money tab — use these to make your questions concrete, and do the math with real figures):
+- Monthly income: ${money$(inc)}
+- Monthly bills: ${money$(bills)}
+- Left over each month if only bills are paid: ${money$(inc-bills)}
+- Cash on hand (checking/savings/cash): ${money$(cash)}
+- Available credit (would become debt if used): ${money$(credit)}
+${goals ? "- Savings goals: "+goals : ""}`;
+}
+
+function renderAI(){
+  if(!state.apiKey){
+    aiArea.innerHTML = `<div class="ai-locked"><b>The advisor isn't switched on yet.</b><br>
+    Whoever set this app up for you can turn it on in Settings (the &#9881; at the top). Everything else in the app works without it — the 5 questions and the calculator above never need it.</div>`;
+    return;
+  }
+  aiArea.innerHTML = `
+    <div class="chatlog" id="chatlog"></div>
+    <div class="chatrow">
+      <textarea id="chatInput" placeholder="e.g. We're thinking about trading in the truck for a new one, payment would be $650 a month..."></textarea>
+      <button class="send" id="sendBtn">Ask</button>
+    </div>`;
+  const log = document.getElementById("chatlog");
+  chat.forEach(m=>appendMsg(m.role, m.content));
+  document.getElementById("sendBtn").addEventListener("click", sendMsg);
+  document.getElementById("chatInput").addEventListener("keydown", e=>{
+    if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); sendMsg(); }
+  });
+}
+
+function appendMsg(role, text, thinking){
+  const log = document.getElementById("chatlog");
+  const div = document.createElement("div");
+  div.className = "msg " + (role==="user"?"user":"ai") + (thinking?" thinking":"");
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+
+async function sendMsg(){
+  const input = document.getElementById("chatInput");
+  const btn = document.getElementById("sendBtn");
+  const text = input.value.trim();
+  if(!text) return;
+  input.value = "";
+  btn.disabled = true;
+  chat.push({role:"user", content:text});
+  appendMsg("user", text);
+  const think = appendMsg("ai", "Thinking it over...", true);
+
+  try{
+    const res = await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-api-key": state.apiKey,
+        "anthropic-version":"2023-06-01",
+        "anthropic-dangerous-direct-browser-access":"true"
+      },
+      body: JSON.stringify({
+        model:"claude-haiku-4-5-20251001",
+        max_tokens:600,
+        system: SYSTEM_PROMPT + moneyContext(),
+        messages: chat.slice(-12) // keep context light
+      })
+    });
+    if(!res.ok){
+      const errBody = await res.json().catch(()=>({}));
+      throw new Error(errBody?.error?.message || ("Request failed ("+res.status+")"));
+    }
+    const data = await res.json();
+    const reply = (data.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("\n").trim() || "(No response)";
+    chat.push({role:"assistant", content:reply});
+    think.remove();
+    appendMsg("ai", reply);
+  }catch(err){
+    think.remove();
+    appendMsg("ai", "Couldn't reach the advisor. " + (
+      /network|fetch/i.test(err.message)
+        ? "Check the internet connection and try again."
+        : err.message + " — if this keeps happening, the key in Settings may need to be re-entered."
+    ));
+    chat.pop(); // remove the failed user turn from history so retry is clean
+  }
+  btn.disabled = false;
+}
+
+/* ============================================================
+   SETTINGS
+============================================================ */
+const overlay = document.getElementById("settingsOverlay");
+document.getElementById("gearBtn").addEventListener("click", ()=>{
+  document.getElementById("apiKeyInput").value = state.apiKey || "";
+  overlay.classList.add("show");
+});
+document.getElementById("closeSettings").addEventListener("click", ()=>overlay.classList.remove("show"));
+overlay.addEventListener("click", e=>{ if(e.target===overlay) overlay.classList.remove("show") });
+
+document.getElementById("saveKey").addEventListener("click", ()=>{
+  state.apiKey = document.getElementById("apiKeyInput").value.trim();
+  persist();
+  const f = document.getElementById("keySaved");
+  f.textContent = state.apiKey ? "Saved. The advisor is ready." : "Key removed.";
+  f.classList.add("show");
+  setTimeout(()=>f.classList.remove("show"), 2500);
+  renderAI();
+});
+
+document.getElementById("exportBtn").addEventListener("click", ()=>{
+  const backup = { statuses: state.statuses, notes: state.notes, money: state.money, exported: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "earned-backup-" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+document.getElementById("importBtn").addEventListener("click", ()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change", e=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const data = JSON.parse(reader.result);
+      if(data.statuses) state.statuses = data.statuses;
+      if(data.notes) state.notes = data.notes;
+      if(data.money) state.money = Object.assign({income:[],bills:[],accounts:[],goals:[]}, data.money);
+      persist();
+      renderBenefits();
+      renderMoney();
+      const f = document.getElementById("importSaved");
+      f.classList.add("show");
+      setTimeout(()=>f.classList.remove("show"), 2500);
+    }catch(err){
+      const f = document.getElementById("importSaved");
+      f.textContent = "That file doesn't look like an Earned backup. Nothing was changed.";
+      f.style.color = "var(--stamp-red)";
+      f.classList.add("show");
+      setTimeout(()=>{ f.classList.remove("show"); f.style.color=""; f.textContent="Restored."; }, 4000);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+});
+
+armDelete(document.getElementById("resetAll"), ()=>{
+  localStorage.removeItem("earned-data");
+  state = { statuses:{}, notes:{}, apiKey:"", money:{income:[],bills:[],accounts:[],goals:[]} };
+  chat = [];
+  renderBenefits();
+  renderMoney();
+  renderAI();
+  const btn = document.getElementById("resetAll");
+  btn.classList.remove("armed");
+  btn.innerHTML = "Erase everything on this phone";
+  overlay.classList.remove("show");
+}, "Tap again to erase everything");
+
+/* ============================================================
+   INIT
+============================================================ */
+renderBenefits();
+renderMoney();
+renderAI();
+runCalc();
+</script>
+</body>
+</html>
